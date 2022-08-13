@@ -1,0 +1,97 @@
+################################################################
+##Writen by Vicente Saenger Derache, Civil Engineering Student##                                                        ##
+##        Univerity of Concepción, Concepción, Chile          ##
+################################################################
+
+#### library                                                    ####
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(readxl)
+library(reshape2)
+#### entry values                                               #####
+H2<-0     #(m.s.n.m.)
+k <-5e-5  #(m/s)
+I <-0     #(m/s)
+L <-2400  #(m)
+h <-9.74  #(m) 
+x <-1184  #(m)
+#### analytic solution                                          #####
+H1<-((L*(h^2+(I/k)*x^2-(I*L/k)*x-H2^2*x)/(L-x)))^(1/2)
+x_PM_06<-x
+h_PM_06<-h
+####  df confection                                             ####
+deltax<-1
+x<-seq(0,L,deltax)
+df<-data.frame(x)
+df$h<-(-(I/k)*df$x^2+((H2^2-H1^2)/L+(I*L)/k)*df$x+(H1)^2)^(1/2)
+####  figure 1                                                  ####
+figure_1<-
+  ggplot(data = df, aes(x = x, y = h))+
+  geom_line(colour="#1874CD") +
+  labs(title="Solución analítica superficie freática",
+       subtitle="Con k = 1e-5 (m/s) e I = 0 (m/s) ",
+       x="L (m)", 
+       y="h (m.s.n.m.)")+
+  annotate("text",x=x_PM_06+550,y=h_PM_06,label="Pozo PM 06, h = 9.74 m.s.n.m.")+
+  annotate("segment",x=x_PM_06,xend=x_PM_06,y=0,yend=h_PM_06)+
+  annotate("text",x=300,y=H1/2,label="H1 = 13.68 m.s.n.m.")+
+  annotate("segment",x=0,xend=0,y=0,yend=H1)+
+  annotate("text",x=L-250,y=H2+0.5,label="H2 = 0 m.s.n.m.")+
+  scale_x_continuous(breaks=seq(0,3000,250),
+                     minor_breaks = 0 )+
+  scale_y_continuous(breaks=seq(-100,100,1))+
+  theme_gray()
+plot(figure_1)
+####  save figure 1                                             ####
+ggsave(
+  "output/figure_1.png",
+  plot = figure_1,
+  device = "png",
+  path = NULL,
+  scale = 1,
+  width = 20,
+  height = 15,
+  units = "cm"
+)
+
+#### read excel acuif                                           ####
+acuif<- read_excel("data/acuif.xlsx", col_names = FALSE)
+colnames(acuif) <- c("del","sup","inf","deldel","x")
+acuif$del <- NULL
+acuif$deldel <- NULL
+####  df confection 
+
+####  plot ajust                                                ####
+df_p <- melt(acuif,id.vars = 'x',variable.name = 'series')
+####  figure 2                                                  ####
+figure_2<-
+  ggplot(data = df_p, aes(x,value))+
+  geom_line(aes(colour = series)) +
+  labs(title="Relleno dominio de estudio",
+       subtitle="Perfil pozo PM 06",
+       x="Longitud (m)", 
+       y="Cota (m.s.n.m.)")+
+  annotate("text",x=x_PM_06+300,y=h_PM_06,label="pozo PM 06")+
+  annotate("segment",x=x_PM_06,xend=x_PM_06,y=-19,yend=41)+
+  annotate("text",x=700,y=20,label="cota H1 sol. analítica")+  
+  annotate("segment",x=0,xend=300,y=H1,yend=H1)+
+  scale_color_manual(name="",
+                     labels=c("Superficie terreno","Superficie manto rocoso"),
+                     values=c("#6E8B3D","#8B7355"))+
+  scale_x_continuous(breaks=seq(0,3000,250),
+                     minor_breaks = 0 )+
+  scale_y_continuous(breaks=seq(-100,100,10))+
+  theme_gray()
+plot(figure_2)
+####  save figure 2                                             ####
+ggsave(
+  "output/figure_2.png",
+  plot = figure_2,
+  device = "png",
+  path = NULL,
+  scale = 1,
+  width = 20,
+  height = 15,
+  units = "cm"
+)

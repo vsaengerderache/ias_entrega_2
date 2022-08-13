@@ -1,0 +1,26 @@
+{
+    "id": "FD3A3D9C",
+    "path": "C:/RStudio/ING_AGUAS_SUBTE_ENTREGA_2/scripts/script1.R",
+    "project_path": "scripts/script1.R",
+    "type": "r_source",
+    "hash": "2258459053",
+    "contents": "",
+    "dirty": false,
+    "created": 1656628463581.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "22,14",
+        "scrollLine": "0"
+    },
+    "folds": "5|64|10|17|\n11|64|17|14|\n18|64|21|10|\n22|64|26|63|\n27|64|44|14|\n45|64|56|0|\n57|64|63|0|\n64|64|65|58|\n66|64|85|14|\n86|64|97|0|\n",
+    "lastKnownWriteTime": 1656637178,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1656642207717,
+    "read_only": false,
+    "read_only_alternatives": []
+}
